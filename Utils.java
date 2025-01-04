@@ -6,7 +6,7 @@ class Start{
 
 			public String getById(name String , int id){
 
-				System.ot.println("This is the normal Method..1/4/20251/4/2025");
+				System.ot.println("This is the normal Method....");
 				
 			}
 	}
