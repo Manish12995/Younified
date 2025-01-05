@@ -1,0 +1,11 @@
+
+input SendMailInput {
+    email: String!
+    subject: String!
+    content: String!
+    category: String
+}
+
+type Mutation{
+    sendMail (input: SendMailInput!): String!
+}

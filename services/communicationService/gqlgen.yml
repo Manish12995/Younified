@@ -1,0 +1,28 @@
+schema:
+  - ../../contracts/communication/graph/*.graphql
+
+resolver:
+  layout: follow-schema
+  dir: ./internal/resolvers
+  package: resolver
+  filename_template: "{name}.resolvers.go"
+
+exec:
+  filename: ./internal/resolvers/generated.go
+  package: resolver
+
+
+# Uncomment to enable federation
+federation:
+  filename: ./internal/resolvers/federation.go
+  package: resolver
+
+# Where should any generated models go?
+model:
+  filename: ../../contracts/communication/model/models_gen.go
+  package: model
+
+# Use module paths instead of file paths
+models:
+  SendMailInput:
+    model: younified-backend/contracts/communication/model.SendMail

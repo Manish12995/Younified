@@ -1,0 +1,223 @@
+scalar Upload 
+scalar ObjectID
+scalar Time
+
+
+type User {
+  id: ObjectID
+  unionID: ObjectID
+  deleted:Boolean
+  username: String
+  password: String
+  firstName: String
+  lastName: String
+  middleName: String
+  maidenName: String
+  commonName: String
+  gender: String
+  profile: UserInfo
+}
+
+type UserInfo {
+  email: String
+  unionMail: String
+  imageURL: String
+  address: String
+  city: String
+  province: String
+  postalCode: String
+  phone: String
+  mobile: String
+  description: String
+}
+
+type News {
+  id: ObjectID
+  content: String
+  createdOn: Time
+  unit: [String]
+  creator: User
+  userID: ObjectID
+}
+
+input NewsInput {
+  content: String!
+  userID: ObjectID
+  createdOn: Time
+  Unit: [String]
+  private: Boolean
+  showLikes: Boolean = true
+  showComments: Boolean = true
+  asUnion: Boolean
+}
+
+type NewsItem {
+  id: ObjectID
+  content: String
+  createdOn: Time
+  unit: [String]
+  creator: User
+  userID: ObjectID
+  likes: [ObjectID]
+  dislikes: [ObjectID]
+  comments: [Comment]
+  images: [String]
+  documents: [NewsDocument]
+  pinned: Boolean
+  show: Boolean
+  private: Boolean
+  showLikes: Boolean
+  showComments: Boolean
+  asUnion: Boolean
+  commentCount: Int
+  likedBy: [User]
+}
+
+
+type Comment {
+  id: ObjectID
+  content: String
+  createdOn: Time
+  userID: ObjectID
+  likes: [ObjectID]
+  dislikes: [ObjectID]
+  creator: User
+}
+
+input CommentInput {
+  userID: ObjectID!
+  content: String
+  createdOn: Time
+  
+}
+
+type NewsReport {
+  data: [NewsItem]
+  total: Int
+}
+type NewsDocument{
+  url: String
+  name: String
+}
+
+input NewsDocumentInput{
+  url: String
+  name: String
+}
+
+type Blog {
+    id: ObjectID
+    header: String
+    subHeader: String
+    content: String
+    images: [String]
+    createdOn: Time
+    createdBy: String
+    featured: Boolean
+}
+
+input BlogInput {
+    header: String!
+    subHeader: String
+    content: String!
+    featured: Boolean
+}
+
+type Query{
+  #-----------------NEWS-------------------#
+    getAllNewsPosts(unionID: ObjectID!, page: Int!,limit: Int!): NewsReport
+    getComments(unionID:ObjectID!,newsID:ObjectID!, page: Int!, limit:Int!):[Comment]
+
+    #-----------------BLOG-------------------#
+    getBlogPosts: [Blog]
+    getOneBlogPost(blogID: ObjectID!): Blog
+}
+
+type Mutation{
+  #-----------------NEWS-------------------#
+    createNews(
+    unionID: ObjectID!
+    input: NewsInput!
+    images: [String]
+    documents: [NewsDocumentInput]
+    category: String!
+  ): NewsItem
+
+  deleteNews(unionID: ObjectID!, newsID: ObjectID!): String
+
+  addComment(
+    unionID: ObjectID!
+    newsID: ObjectID!
+    comment: CommentInput!
+  ): Comment
+
+  likeNewsItem(
+    unionID: ObjectID!
+    newsID: ObjectID!
+    userID: ObjectID!
+  ): NewsItem
+
+  likeComment(
+    unionID: ObjectID!
+    newsID: ObjectID!
+    commentID: ObjectID!
+    userID: ObjectID!
+  ): Comment
+
+  deleteComment(
+    unionID: ObjectID!
+    newsID: ObjectID!
+    commentID: ObjectID!
+  ): String
+
+  "pins/unpins a news post to top of the newsfeed. currently allows for 10 news pins maximum"
+
+  pinNewsPost(unionID: ObjectID!, newsID: ObjectID!): NewsItem
+
+  "allows for pinned post to be shown or hidden by default."
+  showPin(unionID: ObjectID!, newsID: ObjectID!, show: Boolean!): NewsItem
+
+  "allows for news post to be made private or public. private posts will not appear on the public site without a member login"
+  makePrivate(
+    unionID: ObjectID!
+    newsID: ObjectID!
+    private: Boolean!
+  ): NewsItem
+
+  "hide or show likes on a post"
+  likeButtonToggle(
+    unionID: ObjectID!
+    newsID: ObjectID!
+    likeDisplay: Boolean!
+  ): NewsItem
+
+  "hide or show comments on a post"
+  commentButtonToggle(
+    unionID: ObjectID!
+    newsID: ObjectID!
+    commentDisplay: Boolean!
+  ): NewsItem
+
+#-----------------BLOG-------------------#
+
+  createBlogPost(
+    unionID: ObjectID!
+    input: BlogInput!
+    images: [String]
+  ): Blog
+
+  deleteBlogPost(unionID: ObjectID!, blogID: ObjectID!): String
+  makeFeaturedBlog(
+    unionID: ObjectID!
+    blogID: ObjectID!
+    featured: Boolean!
+  ): String
+
+  updateBlogPost(
+    unionID: ObjectID!
+    blogID: ObjectID!
+    input: BlogInput!
+  ): Blog
+}
+
+

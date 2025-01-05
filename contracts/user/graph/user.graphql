@@ -1,0 +1,128 @@
+scalar JSON
+scalar Time
+scalar Int64
+scalar ObjectID
+
+type User {
+  id: ObjectID!
+  unionID: ObjectID!
+  employeeID: String
+  username: String!
+  firstName: String
+  lastName: String
+  middleName: String
+  maidenName: String
+  commonName: String
+  gender: String
+  profile: UserInfo
+  createdOn: Time
+  deleted: Boolean!
+  deletedAT: Time
+  loggedIn: Boolean
+  status: String
+  dateOfBirth: Time
+  startDate: Time
+  location: String
+  unionPosition: String
+  unit: String
+  jobTitle: String
+  membershipType: String
+  employmentType: String
+  employmentStatus: String
+  level: Int
+  meritPoint: Int
+  demeritPoint: Int
+  lastLoginDate: Time
+  isAdmin: Boolean
+  department: String
+  classification: String
+  zone: String
+  shift: String
+}
+
+type UserInfo {
+  email: String
+  unionMail: String
+  imageURL: String
+  address: String
+  city: String
+  province: String
+  postalCode: String
+  phone: String
+  mobile: String
+  description: String
+}
+
+type UserUploadReport {
+  newUsers: [User]
+  UpdatedUsers: [User]
+  ErroredUsers: [User]
+  ErrorMessages: [String]
+}
+
+type SingleUserAuth {
+	User:  User
+	token: String
+}
+
+input UserInput {
+  employeeID: String
+  username: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  unionID: ObjectID!
+  profile: UserInfoInput
+}
+
+input UserInfoInput {
+  email: String
+  unionMail: String
+  address: String
+  city: String
+  province: String
+  postalCode: String
+  phone: String
+  mobile: String
+}
+
+input UserFilterInput {
+  isAdmin: Boolean
+  deleted: Boolean
+  status: String
+  unionID: ObjectID
+}
+
+input UserUpdateInput {
+  firstName: String
+  lastName: String
+  profile: UserInfoInput
+  status: String
+}
+
+input Credential {
+  unionID: ObjectID!
+  username: String!
+  email: String
+  password: String!
+}
+
+type Query {
+  loginWithToken(token: String): SingleUserAuth!
+  user(id: ObjectID!, unionID: ObjectID!): User
+  users(filter: UserFilterInput, page: Int, limit: Int): [User!]!
+  userCount(filter: UserFilterInput): Int64!
+}
+
+type Mutation {
+  registerUser(input: UserInput!): User!
+  createUser(input: UserInput!): User!
+  login(input: Credential, device: String): SingleUserAuth!
+  approveUser(unionID: ObjectID!, memberID: ObjectID!): User!
+  uploadUsers(unionID: ObjectID!, input: [UserInput]): String
+  updateUser(id: ObjectID!, unionID: ObjectID!, input: UserUpdateInput!): User!
+  deleteUser(id: ObjectID!, unionID: ObjectID!): String!
+  restoreUser(id: ObjectID!, unionID: ObjectID!): String!
+  requestPasswordReset(unionID: ObjectID!, username: String): String
+  resetPassword(unionID: ObjectID!, resetKey: String, password: String): String
+}

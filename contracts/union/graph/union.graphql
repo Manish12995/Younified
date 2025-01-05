@@ -1,0 +1,136 @@
+scalar Time
+scalar ObjectID
+
+type Union {
+  id: ObjectID
+  unionID: String
+  name: String
+  status: Int
+  information: UnionInfo
+  modules: [String]
+  deleted:Boolean
+  bargainingUnits: [String]
+  bannerURL: String
+  accountManager: [Manager]
+  communicationRep: [Manager]
+  callDropNumber: String
+  domain: String
+  bannedDomains: [String]
+  theme: String
+  twitter: String
+  twitterLinks: [String]
+  facebook: String
+  facebookLinks: [String]
+  instagram: String
+  instagramLinks: [String]
+  themeImage: String
+  zoomID: String
+  hostEmail: Boolean
+  defaultEmailPassword: String
+  deletedAt: Time
+}
+
+type UnionInfo {
+  email: String
+  unionMail: String
+  imageURL: String
+  landingPage: String
+  address: String
+  city: String
+  country: String
+  state: String
+  province: String
+  postalCode: String
+  zipCode: String
+  phone: String
+  mobile: String
+  description: String
+  bannerURL: String
+  fax: String
+  presidentMessage: String
+}
+
+type FirstUserInfo {
+  firstName: String
+  lastName: String
+  email: String
+  password:String
+  phone: String
+  position: String
+  dateOfBirth: Time
+}
+
+input UnionInput {
+  name: String!
+  information: UnionInfoInput!
+}
+
+input UnionInfoInput {
+  email: String
+  unionMail: String!
+  imageURL: String
+  landingPage: String
+  address: String
+  city: String
+  country: String
+  state: String
+  province: String
+  postalCode: String
+  zipCode: String
+  phone: String
+  mobile: String
+  description: String
+  bannerURL: String
+  fax: String
+  presidentMessage: String
+}
+
+type UnionsResponse {
+  unions: [Union]
+  count: Int
+}
+
+input RegisterInput {
+  union: UnionInput!
+  user: FirstUserInfoInput!
+  defaultUser: DefaultUserInfoInput!
+}
+
+input FirstUserInfoInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password:String!
+  phone: String
+  position: String
+  dateOfBirth: Time!
+}
+
+input DefaultUserInfoInput {
+  userName: String!
+  password: String!
+  level: Int!
+}
+
+type Manager {
+  id: ObjectID!
+  firstName: String
+  lastName: String
+  email: String
+  phone: String
+  mobile: String
+  department: String
+  imageURL: String
+}
+
+type Query {
+  unionById(id: ObjectID!): Union
+  unionByName(name: String!): Union
+  unions(page: Int!, limit: Int!): UnionsResponse
+}
+
+type Mutation {
+  createUnion(input: RegisterInput!): Union!
+  modifyUnion(id: ObjectID!, union: UnionInput!): Union
+  deleteUnion(id: ObjectID!): Boolean
+}

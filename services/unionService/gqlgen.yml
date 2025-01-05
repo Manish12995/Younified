@@ -1,0 +1,50 @@
+schema:
+  - ../../contracts/union/graph/*.graphql
+
+resolver:
+  layout: follow-schema
+  dir: ./internal/resolvers
+  package: resolver
+  filename_template: "{name}.resolvers.go"
+
+exec:
+  filename: ./internal/resolvers/generated.go
+  package: resolver
+
+
+# Uncomment to enable federation
+federation:
+  filename: ./internal/resolvers/federation.go
+  package: resolver
+
+# Where should any generated models go?
+model:
+  filename: ../../contracts/union/model/models_gen.go
+  package: model
+
+# Use module paths instead of file paths
+models:
+  Union:
+    model: younified-backend/contracts/union/model.Union
+  UnionInput:
+    model: younified-backend/contracts/union/model.Union
+  UnionInfo:
+    model: younified-backend/contracts/union/model.UnionInfo
+  UnionInfoInput:
+    model: younified-backend/contracts/union/model.UnionInfo
+  FirstUserInfo:
+    model: younified-backend/contracts/union/model.FirstUserInfo
+  FirstUserInfoInput:
+    model: younified-backend/contracts/union/model.FirstUserInfo
+  DefaultUserInfoInput:
+    model: younified-backend/contracts/union/model.DefaultUserInfo
+  RegisterInput:
+    model: younified-backend/contracts/union/model.RegisterInput
+  DefaultUserInfo:
+    model: younified-backend/contracts/union/model.DefaultUserInfo
+  UnionsResponse:
+    model: younified-backend/contracts/union/model.UnionsResponse
+  Manager:
+    model: younified-backend/contracts/union/model.Manager
+  ObjectID:
+    model: younified-backend/contracts/union/model.ObjectID # Update path if necessary

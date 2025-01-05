@@ -1,0 +1,52 @@
+schema:
+  - ../../contracts/cms/graph/cms.graphql
+
+resolver:
+  layout: follow-schema
+  dir: ./internal/resolvers
+  package: resolver
+  filename_template: "{name}.resolvers.go"
+
+exec:
+  filename: ./internal/resolvers/generated.go
+  package: resolver
+
+
+# Uncomment to enable federation
+federation:
+  filename: ./internal/resolvers/federation.go
+  package: resolver
+
+# Where should any generated models go?
+model:
+  filename: ../../contracts/cms/model/models_gen.go
+  package: model
+
+# Use module paths instead of file paths
+models:
+  UserInfo:
+    model: younified-backend/contracts/user/model.UserInfo
+  User:
+    model: younified-backend/contracts/user/model.User
+  News:
+    model: younified-backend/contracts/cms/model.News
+  NewsInput:
+    model: younified-backend/contracts/cms/model.News
+  NewsItem:
+    model: younified-backend/contracts/cms/model.News
+  Comment:
+    model: younified-backend/contracts/cms/model.Comment
+  CommentInput:
+    model: younified-backend/contracts/cms/model.Comment
+  NewsReport:
+    model: younified-backend/contracts/cms/model.Report
+  NewsDocument:
+    model: younified-backend/contracts/cms/model.Document
+  NewsDocumentInput:
+    model: younified-backend/contracts/cms/model.Document
+  Blog:
+    model: younified-backend/contracts/cms/model.Blog
+  BlogInput:
+    model: younified-backend/contracts/cms/model.Blog
+  ObjectID:
+    model: younified-backend/contracts/common/model.ObjectID
